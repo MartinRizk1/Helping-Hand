@@ -1,6 +1,0 @@
-To add a character image:
-
-1. In Xcode, add a square PNG or JPG image to the Assets.xcassets/helper_neutral.imageset folder
-2. Name it "helper_neutral.png"
-3. Make sure it is a friendly cartoon-style character
-4. For testing, you can use any image about 200x200 pixels

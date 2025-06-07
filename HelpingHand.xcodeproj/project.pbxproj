@@ -52,8 +52,10 @@
 				3631CDFD0D4D2AAB814A46CF /* Resources */,
 				7662829AE60E552BFB635E01 /* Source */,
 			);
-			path = "Helping-Hand";
+			path = App;
 			sourceTree = "<group>";
+			indentWidth = 2;
+			tabWidth = 2;
 		};
 		3631CDFD0D4D2AAB814A46CF /* Resources */ = {
 			isa = PBXGroup;

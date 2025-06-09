@@ -8,7 +8,7 @@ Before starting the tests, ensure you have:
 
 - macOS with Xcode 13.0+ installed
 - Access to an iOS Simulator (iPhone 13 recommended)
-- The Helping Hand project directory at `/Users/martinrizk/Desktop/Helping-Hand/`
+- The Helping Hand project directory (this repository)
 
 ## Testing Preparation
 
@@ -17,7 +17,7 @@ Before starting the tests, ensure you have:
    The app can run without a character image (it will use SF Symbols instead), but you can add one:
 
    ```bash
-   cd /Users/martinrizk/Desktop/Helping-Hand/
+   cd /path/to/Helping-Hand/
    ./setup_character.sh
    ```
 
@@ -32,7 +32,7 @@ Before starting the tests, ensure you have:
    Execute the automated test script which will guide you through testing all features:
 
    ```bash
-   cd /Users/martinrizk/Desktop/Helping-Hand/
+   cd /path/to/Helping-Hand/
    ./test_app.sh
    ```
 
@@ -108,4 +108,4 @@ If any issues occur during testing:
 4. **Location services prompt:** The app is in test mode and doesn't require real location permissions
 
 For more detailed information, refer to the full testing guide:
-`/Users/martinrizk/Desktop/Helping-Hand/Helping-Hand/TESTING_GUIDE.md`
+`./TESTING_GUIDE.md`

@@ -22,6 +22,13 @@
 	<string>Your location helps us find the best local places and services for you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to find nearby places and provide relevant recommendations.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Access to your location helps us provide better recommendations for nearby services and places.</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>HelpingHandLocationAccess</key>
+		<string>This app needs temporary access to your precise location to find the best nearby services for you.</string>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -37,6 +44,22 @@
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 				</dict>
 			</array>
+		</dict>
+	</dict>
+	<!-- App Transport Security Configuration -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>api.openai.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSExceptionMinimumTLSVersion</key>
+				<string>TLSv1.2</string>
+			</dict>
 		</dict>
 	</dict>
 	<key>UILaunchStoryboardName</key>

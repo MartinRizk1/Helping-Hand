@@ -1,0 +1,65 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build HelpingHand for Simulator",
+            "type": "shell",
+            "command": "xcodebuild",
+            "args": [
+                "-project",
+                "HelpingHand.xcodeproj",
+                "-scheme",
+                "HelpingHand",
+                "-configuration",
+                "Debug",
+                "-destination",
+                "platform=iOS Simulator,name=iPhone 16,OS=18.3.1",
+                "build"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean Build Folder",
+            "type": "shell",
+            "command": "xcodebuild",
+            "args": [
+                "-project",
+                "HelpingHand.xcodeproj",
+                "-scheme",
+                "HelpingHand",
+                "clean"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build and Run in Simulator",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "xcodebuild -project HelpingHand.xcodeproj -scheme HelpingHand -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.3.1' build && xcrun simctl boot EC972889-9577-4C52-B528-98E2925994E4 && xcrun simctl install EC972889-9577-4C52-B528-98E2925994E4 '${env:HOME}/Library/Developer/Xcode/DerivedData/HelpingHand-*/Build/Products/Debug-iphonesimulator/HelpingHand.app' && xcrun simctl launch EC972889-9577-4C52-B528-98E2925994E4 com.helpinghand.app.local"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

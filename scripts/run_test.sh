@@ -19,7 +19,7 @@ if ! command -v xcodebuild &> /dev/null; then
     exit 1
 fi
 
-PROJECT_PATH="/Users/martinrizk/Desktop/Helping-Hand/Helping-Hand.xcodeproj"
+PROJECT_PATH="$(dirname "$0")/../HelpingHand.xcodeproj"
 
 # Check if the project exists
 if [ ! -d "$PROJECT_PATH" ]; then
@@ -28,11 +28,11 @@ if [ ! -d "$PROJECT_PATH" ]; then
 fi
 
 echo -e "\n${GREEN}1. Checking for character image...${NC}"
-if [ ! -f "/Users/martinrizk/Desktop/Helping-Hand/Helping-Hand/add_character_image.txt" ]; then
+if [ ! -f "$(dirname "$0")/../add_character_image.txt" ]; then
     echo -e "${YELLOW}Please make sure to add a character image as described in the TESTING_GUIDE.md${NC}"
 else
     echo -e "Character image instructions found. Please follow the instructions in add_character_image.txt"
-    cat "/Users/martinrizk/Desktop/Helping-Hand/Helping-Hand/add_character_image.txt"
+    cat "$(dirname "$0")/../add_character_image.txt"
 fi
 
 echo -e "\n${GREEN}2. Opening Xcode project...${NC}"
@@ -47,6 +47,6 @@ echo "  • \"I'm looking for Chinese food\""
 echo "  • \"I need a hotel nearby\""
 
 echo -e "\n${YELLOW}For more detailed testing instructions, please refer to:${NC}"
-echo "/Users/martinrizk/Desktop/Helping-Hand/Helping-Hand/TESTING_GUIDE.md"
+echo "$(dirname "$0")/../TESTING_GUIDE.md"
 
 echo -e "\n${GREEN}Happy testing!${NC}"

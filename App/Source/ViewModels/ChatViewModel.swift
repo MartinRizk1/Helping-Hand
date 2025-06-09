@@ -12,6 +12,9 @@ class ChatViewModel: ObservableObject {
     private let locationService: LocationService
     private var cancellables = Set<AnyCancellable>()
     
+    // Expose locationService for UI access
+    var locationServiceInstance: LocationService { return locationService }
+    
     init(aiService: AIService = AIService(), locationService: LocationService = LocationService()) {
         self.aiService = aiService
         self.locationService = locationService
@@ -33,7 +36,7 @@ class ChatViewModel: ObservableObject {
             
         // Add welcome message
         let welcomeMessage = ChatMessage(
-            content: "Hi there! I'm your AI assistant. I can help you find nearby places and services. Please allow location access so I can provide better recommendations.",
+            content: "👋 Hi there! I'm your AI location assistant. I can help you find amazing places nearby!\n\nTry asking me about:\n• Restaurants (like \"Chinese food\" or \"pizza\")\n• Hotels and accommodations\n• Shopping and services\n• Entertainment venues\n• Healthcare facilities\n\nPlease allow location access so I can provide personalized recommendations based on where you are! 📍",
             isUser: false
         )
         messages.append(welcomeMessage)
@@ -46,30 +49,42 @@ class ChatViewModel: ObservableObject {
         // Add user message
         let userMessage = ChatMessage(content: text, isUser: true)
         messages.append(userMessage)
-        
+
         isTyping = true
         
-        // Process with AI service
-        aiService.processUserQuery(text, location: formatCurrentLocation())
-            .receive(on: DispatchQueue.main)
-            .sink(
-                receiveCompletion: { [weak self] completion in
-                    self?.isTyping = false
-                    if case .failure(let error) = completion {
-                        self?.error = error.localizedDescription
+        // Refresh location for real-time data before processing
+        locationService.refreshCurrentLocation()
+        
+        // Small delay to allow location refresh
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            guard let self = self else { return }
+            
+            // Process with AI service using current location
+            self.aiService.processUserQuery(text, location: self.formatCurrentLocation())
+                .receive(on: DispatchQueue.main)
+                .sink(
+                    receiveCompletion: { [weak self] completion in
+                        self?.isTyping = false
+                        if case .failure(let error) = completion {
+                            self?.handleError(error)
+                        }
+                    },
+                    receiveValue: { [weak self] (response, category) in
+                        self?.isTyping = false
+                        let aiMessage = ChatMessage(content: response, isUser: false)
+                        self?.messages.append(aiMessage)
+                        
+                        if let category = category {
+                            // Try specific search first, then fall back to general category
+                            let specificQuery = self?.aiService.generateSpecificLocationQuery(for: text)
+                            let searchQuery = specificQuery ?? self?.aiService.generateLocationQuery(for: category)
+                            print("🔍 Performing search with query: \(searchQuery ?? "unknown")")
+                            self?.locationService.searchNearbyPlaces(for: text, query: searchQuery)
+                        }
                     }
-                },
-                receiveValue: { [weak self] (response, category) in
-                    let aiMessage = ChatMessage(content: response, isUser: false)
-                    self?.messages.append(aiMessage)
-                    
-                    if let category = category {
-                        let searchQuery = self?.aiService.generateLocationQuery(for: category)
-                        self?.locationService.searchNearbyPlaces(for: text, query: searchQuery)
-                    }
-                }
-            )
-            .store(in: &cancellables)
+                )
+                .store(in: &self.cancellables)
+        }
     }
     
     private func handleLocationResults(_ results: [LocationResult]) {
@@ -125,5 +140,35 @@ class ChatViewModel: ObservableObject {
             self.error = error.localizedDescription
             self.isTyping = false
         }
+    }
+    
+    // MARK: - Real-time Location Methods
+    
+    func getCurrentLocationStatus() -> String {
+        guard let location = locationService.currentLocation else {
+            return "Location not available"
+        }
+        
+        let age = -location.timestamp.timeIntervalSinceNow
+        let accuracy = location.horizontalAccuracy
+        
+        if age < 30 && accuracy < 100 {
+            return "Real-time location active (±\(Int(accuracy))m)"
+        } else if age < 60 {
+            return "Recent location (\(Int(age))s ago, ±\(Int(accuracy))m)"
+        } else {
+            return "Outdated location (\(Int(age/60))min ago)"
+        }
+    }
+    
+    func forceLocationRefresh() {
+        print("🔄 Manual location refresh requested")
+        locationService.refreshCurrentLocation()
+    }
+    
+    func isLocationRealTime() -> Bool {
+        guard let location = locationService.currentLocation else { return false }
+        let age = -location.timestamp.timeIntervalSinceNow
+        return age < 30 && location.horizontalAccuracy < 100
     }
 }

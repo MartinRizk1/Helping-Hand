@@ -13,7 +13,7 @@ This guide will help you test the Helping Hand application in the iOS Simulator.
 1. **Open the project in Xcode:**
 
    ```
-   open /Users/martinrizk/Desktop/Helping-Hand/Helping-Hand.xcodeproj
+   open ./Helping-Hand.xcodeproj
    ```
 
 2. **Add a placeholder character image:**

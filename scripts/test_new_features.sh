@@ -12,7 +12,7 @@ BOLD='\033[1m'
 RESET='\033[0m'
 
 # App project path
-APP_PATH="/Users/martinrizk/Desktop/Helping-Hand"
+APP_PATH="$(dirname "$0")/.."
 
 clear
 echo "${BLUE}${BOLD}======================================================${RESET}"

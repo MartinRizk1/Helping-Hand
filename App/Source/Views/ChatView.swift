@@ -74,6 +74,27 @@ struct ChatView: View {
                 .background(Color(.systemBackground))
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Location Status")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                    Text(chatViewModel.getCurrentLocationStatus())
+                        .font(.caption)
+                        .foregroundColor(chatViewModel.isLocationRealTime() ? .green : .orange)
+                        .lineLimit(1)
+                }
+            }
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: refreshLocation) {
+                    Image(systemName: chatViewModel.isLocationRealTime() ? "location.circle.fill" : "location.circle")
+                        .foregroundColor(chatViewModel.isLocationRealTime() ? .green : .orange)
+                }
+            }
+        }
         .alert("Error", isPresented: .constant(chatViewModel.error != nil)) {
             Button("OK") {
                 chatViewModel.clearError()
@@ -92,6 +113,22 @@ struct ChatView: View {
         chatViewModel.sendMessage(trimmedMessage)
         messageText = ""
         isInputFocused = false
+    }
+    
+    private func refreshLocation() {
+        // Access the location service through the chat view model
+        chatViewModel.forceLocationRefresh()
+        
+        // Show real-time feedback to user
+        let statusMessage = chatViewModel.isLocationRealTime() ? 
+            "🔄 Refreshing real-time location for the most current results..." :
+            "🔄 Updating location data to get your current position..."
+        
+        let feedbackMessage = ChatMessage(
+            content: statusMessage,
+            isUser: false
+        )
+        chatViewModel.messages.append(feedbackMessage)
     }
 }
 

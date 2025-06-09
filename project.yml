@@ -12,15 +12,23 @@ packages:
   Combine:
     url: https://github.com/OpenCombine/OpenCombine
     majorVersion: 0.14.0
+  OpenAI:
+    url: https://github.com/MacPaw/OpenAI
+    majorVersion: 0.2.4
 
 targets:
   HelpingHand:
     type: application
     platform: iOS
     sources:
-      - path: Helping-Hand
+      - path: App
         excludes:
           - "**/.DS_Store"
+    dependencies:
+      - package: Combine
+        product: OpenCombine
+      - package: OpenAI
+        product: OpenAI
     settings:
       base:
         DEVELOPMENT_TEAM: ""
@@ -39,7 +47,7 @@ targets:
         ENABLE_BITCODE: NO
         IPHONEOS_DEPLOYMENT_TARGET: 15.0
     info:
-      path: Helping-Hand/Helping-Hand/Info.plist
+      path: App/Info.plist
       properties:
         CFBundleShortVersionString: "1.0"
         CFBundleVersion: "1"

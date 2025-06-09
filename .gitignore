@@ -95,3 +95,20 @@ quality-reports/
 .DS_Store
 */.DS_Store
 Assets.xcassets/helper_neutral.imageset/*.png
+
+# Security - API Keys and Secrets
+Config/secrets.json
+*.secrets.json
+secrets.json
+.env
+.env.local
+.env.production
+*.plist.local
+APIKeys.plist
+secrets.plist
+
+# Development Configuration
+Config/development.json
+Config/local.json
+build/
+DerivedData/

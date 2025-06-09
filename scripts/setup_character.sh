@@ -11,7 +11,7 @@ RED='\033[0;31m'
 BOLD='\033[1m'
 RESET='\033[0m'
 
-ASSETS_DIR="/Users/martinrizk/Desktop/Helping-Hand/Helping-Hand/Assets.xcassets"
+ASSETS_DIR="$(dirname "$0")/../App/Resources/Assets.xcassets"
 IMAGE_DIR="$ASSETS_DIR/helper_neutral.imageset"
 
 clear

@@ -1,7 +1,19 @@
 import Foundation
 
-enum APIConfig {
-    static var openAIApiKey: String {
+public enum APIConfig {
+    private static let errorMessage = """
+        ⚠️ OpenAI API key not configured!
+        📝 Please set your API key using one of these methods:
+           1. Environment variable: export OPENAI_API_KEY='your-key-here'
+           2. Create Config/secrets.json with your API key
+           3. Get your API key from: https://platform.openai.com/api-keys
+        
+        🔒 For security, AI features will be disabled until a valid API key is provided.
+        """
+    
+    private static var hasLoggedError = false
+    
+    public static var openAIApiKey: String {
         // First try environment variable
         if let envKey = ProcessInfo.processInfo.environment["OPENAI_API_KEY"], !envKey.isEmpty {
             return envKey
@@ -12,14 +24,14 @@ enum APIConfig {
             return configKey
         }
         
-        // Fallback - show error and return placeholder
-        print("⚠️ OpenAI API key not configured!")
-        print("📝 Please set your API key using one of these methods:")
-        print("   1. Environment variable: export OPENAI_API_KEY='your-key-here'")
-        print("   2. Create Config/secrets.json with your API key")
-        print("   3. Get your API key from: https://platform.openai.com/api-keys")
+        // Only log this error once
+        if !hasLoggedError {
+            Logger.error(errorMessage)
+            hasLoggedError = true
+        }
         
-        return "your-openai-api-key-here"
+        // Return empty string to fail securely rather than a placeholder
+        return ""
     }
     
     private static func loadAPIKeyFromFile() -> String? {

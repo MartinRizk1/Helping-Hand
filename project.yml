@@ -1,71 +1,28 @@
 name: HelpingHand
-options:
-  deploymentTarget:
-    iOS: "15.0"
-  createIntermediateGroups: true
-  xcodeVersion: "14.0"
-  indentWidth: 2
-  tabWidth: 2
-  bundleIdPrefix: com.helpinghand
-
 packages:
-  Combine:
-    url: https://github.com/OpenCombine/OpenCombine
-    majorVersion: 0.14.0
   OpenAI:
-    url: https://github.com/MacPaw/OpenAI
-    majorVersion: 0.2.4
-
+    url: https://github.com/MacPaw/OpenAI.git
+    version: 0.2.4
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget: 
+    iOS: 15.0
+  xcodeFlags:
+    ENABLE_HARDENED_RUNTIME: YES
 targets:
   HelpingHand:
     type: application
     platform: iOS
-    sources:
-      - path: App
-        excludes:
-          - "**/.DS_Store"
+    sources: 
+      - App
+    settings:
+      base:
+        INFOPLIST_FILE: App/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.helpinghand
+      configs:
+        debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+        release:
+          SWIFT_COMPILATION_MODE: wholemodule
     dependencies:
-      - package: Combine
-        product: OpenCombine
       - package: OpenAI
-        product: OpenAI
-    settings:
-      base:
-        DEVELOPMENT_TEAM: ""
-        PRODUCT_BUNDLE_IDENTIFIER: com.helpinghand.app
-        TARGETED_DEVICE_FAMILY: 1
-        SWIFT_VERSION: 5.0
-        CODE_SIGN_STYLE: Manual
-        CODE_SIGN_IDENTITY: "-"
-        CODE_SIGNING_REQUIRED: NO
-        CODE_SIGNING_ALLOWED: NO
-        ENABLE_BITCODE: NO
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        ENABLE_BITCODE: NO
-        OTHER_LDFLAGS: $(inherited) -weak_framework Combine
-        SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
-        ENABLE_BITCODE: NO
-        IPHONEOS_DEPLOYMENT_TARGET: 15.0
-    info:
-      path: App/Info.plist
-      properties:
-        CFBundleShortVersionString: "1.0"
-        CFBundleVersion: "1"
-        UIMainStoryboardFile: ""
-        UILaunchStoryboardName: LaunchScreen
-        UIApplicationSceneManifest:
-          UIApplicationSupportsMultipleScenes: false
-          UISceneConfigurations:
-            UIWindowSceneSessionRoleApplication:
-              - UISceneConfigurationName: Default Configuration
-                UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
-        NSLocationWhenInUseUsageDescription: "We need your location to find nearby places and provide relevant recommendations."
-        NSLocationUsageDescription: "Your location helps us find the best local places and services for you."
-    settings:
-      base:
-        DEVELOPMENT_TEAM: "" # You'll need to set this to your team ID
-        PRODUCT_BUNDLE_IDENTIFIER: com.helpinghand.app
-        TARGETED_DEVICE_FAMILY: 1 # iPhone only
-        SWIFT_VERSION: 5.0
-        CODE_SIGN_STYLE: Automatic
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon

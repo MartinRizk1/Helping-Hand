@@ -56,36 +56,22 @@ class LocationService: NSObject, ObservableObject {
         
         // Configure activity type for general location tracking
         locationManager.activityType = .other
+        locationManager.pausesLocationUpdatesAutomatically = false
         
-        // Disable background location updates (for now)
+        // For background location updates if needed
         if #available(iOS 9.0, *) {
             locationManager.allowsBackgroundLocationUpdates = false
         }
-        
-        // Enable automatic pausing when location data is not needed
-        locationManager.pausesLocationUpdatesAutomatically = true
     }
-     func requestLocationPermission() {
-        guard CLLocationManager.locationServicesEnabled() else {
-            print("❌ Location services not enabled")
-            return
-        }
-        
-        switch authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .denied, .restricted:
-            print("⚠️ Location access denied or restricted")
-        case .authorizedWhenInUse, .authorizedAlways:
-            startUpdatingLocation()
-        @unknown default:
-            locationManager.requestWhenInUseAuthorization()
-        }
+    
+    func requestLocationPermission() {
+        print("🔐 Requesting location permission...")
+        locationManager.requestWhenInUseAuthorization()
     }
-
+    
     func startUpdatingLocation() {
         guard CLLocationManager.locationServicesEnabled() else {
-            print("❌ Location services disabled")
+            print("❌ Location services are disabled")
             return
         }
         

@@ -8,44 +8,47 @@
 
 /* Begin PBXBuildFile section */
 		035F30E9082BC0D2B9378E7F /* LocationManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD7003C318D1D7307832971 /* LocationManagerDelegate.swift */; };
-		0CE593D5338A92D625D0B9AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30BCB897E883BB45E420A00F /* LaunchScreen.storyboard */; };
 		16DEAA8CA8BC2547E5C44218 /* LocationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90A5F054F64623EB7F30342 /* LocationResult.swift */; };
+		1D3F2194083661E14CB30272 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EC7C5E7A66B8BBED5847E5 /* KeychainWrapper.swift */; };
 		301AFF98172BCB1CD80AE3E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2EE9F8450AA8A5E48D3DC7B /* AppDelegate.swift */; };
+		316FC6205FEBF87506A5F838 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754215AFE2B7D2624E972AA0 /* SearchService.swift */; };
 		3A20BC8AE7B794FE8650FF13 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051016AF421A9AC2601BD873 /* MainView.swift */; };
-		48BF67612C769254D8C6F6C2 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167D2BB6D9C2D846F2D56343 /* LocationViewModel.swift */; };
-		4F0E4AF4291A4F2BB6BE6E33 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 938BB1BA3BFC8071D948C031 /* OpenAI */; };
 		6AC4FB93BCEDDC18CA85C0FA /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E3200CF518A41157CFFDA5 /* MapView.swift */; };
 		84B7FCCCFD5A8DBDC6C83978 /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2731D795406DA411FD048EBD /* APIConfig.swift */; };
 		92B82C51FF88C5B23B50B623 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BCF69A9ABC707BC367628D /* LocationService.swift */; };
 		93AC3026AB9E98250B6EE40A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C9B1D44A60EB33572E8F65 /* SceneDelegate.swift */; };
+		A465B3009CA86504C2B71623 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D8C7F18D068DFBF7846D9A /* Place.swift */; };
 		AD20295D1FA5A638AF49C888 /* LocationResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309A077FD6E87DE3147298F7 /* LocationResultsView.swift */; };
 		B00C3E5FDC831DD0F8129E7E /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8BFB3142378549088154B4 /* AIService.swift */; };
 		B821583B1561E4791B067EC4 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8624C39A22C747AC729F4D62 /* ChatViewModel.swift */; };
-		B95A05E1C80552BED85B6390 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC6C910638395BF536786B59 /* Assets.xcassets */; };
 		BE0297212CEAE01C9531EBAE /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8DE8F5DB13542136A2A347 /* ChatMessage.swift */; };
-		C4A9C3C0AE932335781F3D15 /* OpenCombine in Frameworks */ = {isa = PBXBuildFile; productRef = 3AC591239118132C49C197E3 /* OpenCombine */; };
+		C146780146DCED62C2A100BD /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363FD32483FCC7E645E96564 /* MainViewModel.swift */; };
+		C4A9C3C0AE932335781F3D15 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = 938BB1BA3BFC8071D948C031 /* OpenAI */; };
 		E8054FCAD61A92B807EF4CB4 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FB2C983D4FD097E4FCACAD /* ChatView.swift */; };
+		F1B2C3D4E5F6A7B8C9D0E1F2 /* LandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2B3C4D5E6F7A8B9C0D1E2F3 /* LandingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		051016AF421A9AC2601BD873 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		167D2BB6D9C2D846F2D56343 /* LocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		2731D795406DA411FD048EBD /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
 		309A077FD6E87DE3147298F7 /* LocationResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationResultsView.swift; sourceTree = "<group>"; };
-		30BCB897E883BB45E420A00F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		363FD32483FCC7E645E96564 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		4FD7003C318D1D7307832971 /* LocationManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManagerDelegate.swift; sourceTree = "<group>"; };
+		65EC7C5E7A66B8BBED5847E5 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		69B4A309352362CA5979C5B2 /* HelpingHand.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HelpingHand.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		754215AFE2B7D2624E972AA0 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		7A8DE8F5DB13542136A2A347 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		8624C39A22C747AC729F4D62 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		92E3200CF518A41157CFFDA5 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		A3D8C7F18D068DFBF7846D9A /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		A7FB2C983D4FD097E4FCACAD /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		A90A5F054F64623EB7F30342 /* LocationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationResult.swift; sourceTree = "<group>"; };
 		AF8BFB3142378549088154B4 /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
 		BD653B8BA276102C8FD54A0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E0BCF69A9ABC707BC367628D /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
-		EC6C910638395BF536786B59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F0C9B1D44A60EB33572E8F65 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		F2EE9F8450AA8A5E48D3DC7B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A2B3C4D5E6F7A8B9C0D1E2F3 /* LandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,14 +56,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4A9C3C0AE932335781F3D15 /* OpenCombine in Frameworks */,
-				4F0E4AF4291A4F2BB6BE6E33 /* OpenAI in Frameworks */,
+				C4A9C3C0AE932335781F3D15 /* OpenAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23C2B696EE023F8CB3D9C692 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				65EC7C5E7A66B8BBED5847E5 /* KeychainWrapper.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		3500F8F8A42A3062EA685771 /* Source */ = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +79,7 @@
 				50EA4CE325CD15DEA1D31981 /* Configuration */,
 				CECA7F8D7181E3FD12A1316E /* Models */,
 				E1A5926F4E1B19C11DD19377 /* Services */,
+				23C2B696EE023F8CB3D9C692 /* Utilities */,
 				79ACED44EC0324511955C9C6 /* ViewModels */,
 				45C56D7C926841F111549FC2 /* Views */,
 			);
@@ -79,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				A7FB2C983D4FD097E4FCACAD /* ChatView.swift */,
+				A2B3C4D5E6F7A8B9C0D1E2F3 /* LandingView.swift */,
 				309A077FD6E87DE3147298F7 /* LocationResultsView.swift */,
 				051016AF421A9AC2601BD873 /* MainView.swift */,
 				92E3200CF518A41157CFFDA5 /* MapView.swift */,
@@ -92,9 +104,7 @@
 				F1F6203C2132CA525BB9A6BA /* App */,
 				7B14871AF74C5CB731D381AD /* Products */,
 			);
-			indentWidth = 2;
 			sourceTree = "<group>";
-			tabWidth = 2;
 		};
 		50EA4CE325CD15DEA1D31981 /* Configuration */ = {
 			isa = PBXGroup;
@@ -108,7 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				8624C39A22C747AC729F4D62 /* ChatViewModel.swift */,
-				167D2BB6D9C2D846F2D56343 /* LocationViewModel.swift */,
+				363FD32483FCC7E645E96564 /* MainViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -121,20 +131,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		ABEF8A9B919167D197C37EE0 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				EC6C910638395BF536786B59 /* Assets.xcassets */,
-				30BCB897E883BB45E420A00F /* LaunchScreen.storyboard */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		CECA7F8D7181E3FD12A1316E /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				7A8DE8F5DB13542136A2A347 /* ChatMessage.swift */,
 				A90A5F054F64623EB7F30342 /* LocationResult.swift */,
+				A3D8C7F18D068DFBF7846D9A /* Place.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -145,6 +147,7 @@
 				AF8BFB3142378549088154B4 /* AIService.swift */,
 				4FD7003C318D1D7307832971 /* LocationManagerDelegate.swift */,
 				E0BCF69A9ABC707BC367628D /* LocationService.swift */,
+				754215AFE2B7D2624E972AA0 /* SearchService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -153,7 +156,6 @@
 			isa = PBXGroup;
 			children = (
 				BD653B8BA276102C8FD54A0A /* Info.plist */,
-				ABEF8A9B919167D197C37EE0 /* Resources */,
 				3500F8F8A42A3062EA685771 /* Source */,
 			);
 			path = App;
@@ -167,7 +169,6 @@
 			buildConfigurationList = BF92356F8376B18E9DE74D1C /* Build configuration list for PBXNativeTarget "HelpingHand" */;
 			buildPhases = (
 				B128C2FAC44B10EF8FEAAEA5 /* Sources */,
-				933BA1EFE6349EB69F87DB66 /* Resources */,
 				FB867B196CEEF8C8AE512812 /* Frameworks */,
 			);
 			buildRules = (
@@ -176,7 +177,6 @@
 			);
 			name = HelpingHand;
 			packageProductDependencies = (
-				3AC591239118132C49C197E3 /* OpenCombine */,
 				938BB1BA3BFC8071D948C031 /* OpenAI */,
 			);
 			productName = HelpingHand;
@@ -190,12 +190,8 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					4C06D6BB43D3497FF6204D1A = {
-						DevelopmentTeam = "";
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = BA49ED3BA942DE3FCC38484D /* Build configuration list for PBXProject "HelpingHand" */;
@@ -209,8 +205,7 @@
 			mainGroup = 4ABADCDF0E6EA5551881CAE6;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				DABE37CF65F8E3879B1CAD00 /* XCRemoteSwiftPackageReference "OpenCombine" */,
-				BF87926E30EC3515CD259AD6 /* XCRemoteSwiftPackageReference "OpenAI" */,
+				1551D25354F818ADE8E59F8E /* XCRemoteSwiftPackageReference "OpenAI" */,
 			);
 			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
@@ -220,18 +215,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		933BA1EFE6349EB69F87DB66 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B95A05E1C80552BED85B6390 /* Assets.xcassets in Resources */,
-				0CE593D5338A92D625D0B9AC /* LaunchScreen.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B128C2FAC44B10EF8FEAAEA5 /* Sources */ = {
@@ -244,14 +227,18 @@
 				BE0297212CEAE01C9531EBAE /* ChatMessage.swift in Sources */,
 				E8054FCAD61A92B807EF4CB4 /* ChatView.swift in Sources */,
 				B821583B1561E4791B067EC4 /* ChatViewModel.swift in Sources */,
+				1D3F2194083661E14CB30272 /* KeychainWrapper.swift in Sources */,
+				F1B2C3D4E5F6A7B8C9D0E1F2 /* LandingView.swift in Sources */,
 				035F30E9082BC0D2B9378E7F /* LocationManagerDelegate.swift in Sources */,
 				16DEAA8CA8BC2547E5C44218 /* LocationResult.swift in Sources */,
 				AD20295D1FA5A638AF49C888 /* LocationResultsView.swift in Sources */,
 				92B82C51FF88C5B23B50B623 /* LocationService.swift in Sources */,
-				48BF67612C769254D8C6F6C2 /* LocationViewModel.swift in Sources */,
 				3A20BC8AE7B794FE8650FF13 /* MainView.swift in Sources */,
+				C146780146DCED62C2A100BD /* MainViewModel.swift in Sources */,
 				6AC4FB93BCEDDC18CA85C0FA /* MapView.swift in Sources */,
+				A465B3009CA86504C2B71623 /* Place.swift in Sources */,
 				93AC3026AB9E98250B6EE40A /* SceneDelegate.swift in Sources */,
+				316FC6205FEBF87506A5F838 /* SearchService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,18 +249,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.helpinghand.app.local;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.helpinghand;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -400,18 +385,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.helpinghand.app.local;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.helpinghand;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -439,33 +422,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BF87926E30EC3515CD259AD6 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+		1551D25354F818ADE8E59F8E /* XCRemoteSwiftPackageReference "OpenAI" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/MacPaw/OpenAI";
+			repositoryURL = "https://github.com/MacPaw/OpenAI.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.4;
-			};
-		};
-		DABE37CF65F8E3879B1CAD00 /* XCRemoteSwiftPackageReference "OpenCombine" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/OpenCombine/OpenCombine";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.14.0;
+				kind = exactVersion;
+				version = 0.2.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3AC591239118132C49C197E3 /* OpenCombine */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DABE37CF65F8E3879B1CAD00 /* XCRemoteSwiftPackageReference "OpenCombine" */;
-			productName = OpenCombine;
-		};
 		938BB1BA3BFC8071D948C031 /* OpenAI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = BF87926E30EC3515CD259AD6 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			package = 1551D25354F818ADE8E59F8E /* XCRemoteSwiftPackageReference "OpenAI" */;
 			productName = OpenAI;
 		};
 /* End XCSwiftPackageProductDependency section */

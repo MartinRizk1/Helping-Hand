@@ -98,6 +98,7 @@ Assets.xcassets/helper_neutral.imageset/*.png
 
 # Security - API Keys and Secrets
 Config/secrets.json
+App/Config/secrets.json
 *.secrets.json
 secrets.json
 .env

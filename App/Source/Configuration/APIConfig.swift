@@ -1,45 +1,29 @@
 import Foundation
 
-public enum APIConfig {
-    private static let errorMessage = """
-        ⚠️ OpenAI API key not configured!
-        📝 Please set your API key using one of these methods:
-           1. Environment variable: export OPENAI_API_KEY='your-key-here'
-           2. Create Config/secrets.json with your API key
-           3. Get your API key from: https://platform.openai.com/api-keys
-        
-        🔒 For security, AI features will be disabled until a valid API key is provided.
-        """
+enum APIConfig {
+    private static let apiKeyKey = "OPENAI_API_KEY"
     
-    private static var hasLoggedError = false
-    
-    public static var openAIApiKey: String {
+    static var openAIKey: String {
         // First try environment variable
-        if let envKey = ProcessInfo.processInfo.environment["OPENAI_API_KEY"], !envKey.isEmpty {
-            return envKey
+        if let key = ProcessInfo.processInfo.environment[apiKeyKey], !key.isEmpty {
+            return key
         }
         
-        // Try loading from local config file (not committed to git)
-        if let configKey = loadAPIKeyFromFile() {
+        // Try loading from local config file (gitignored)
+        if let configKey = loadAPIKeyFromFile(), !configKey.isEmpty {
             return configKey
         }
         
-        // Only log this error once
-        if !hasLoggedError {
-            Logger.error(errorMessage)
-            hasLoggedError = true
-        }
-        
-        // Return empty string to fail securely rather than a placeholder
-        return ""
+        // Return placeholder instead of crashing - app will use fallback responses
+        print("⚠️ OpenAI API key not found. App will use fallback responses.")
+        return "your-openai-api-key-here"
     }
     
     private static func loadAPIKeyFromFile() -> String? {
-        guard let path = Bundle.main.path(forResource: "secrets", ofType: "json"),
+        guard let path = Bundle.main.path(forResource: "secrets", ofType: "json", inDirectory: "Config"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let apiKey = json["openai_api_key"] as? String,
-              !apiKey.isEmpty else {
+              let apiKey = json["OPENAI_API_KEY"] as? String else {
             return nil
         }
         return apiKey

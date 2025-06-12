@@ -10,19 +10,15 @@ class AIService {
         "hotel": ["hotel", "motel", "stay", "accommodation", "lodging", "inn", "resort", "bed and breakfast"],
         "shopping": ["shop", "mall", "store", "retail", "market", "grocery", "supermarket", "pharmacy", "clothing"],
         "entertainment": ["movie", "theatre", "entertainment", "fun", "activity", "cinema", "bowling", "arcade", "bar", "nightclub", "museum", "park"],
-        "health": ["hospital", "doctor", "clinic", "medical", "pharmacy", "dentist", "urgent care", "emergency"],
-        "transportation": ["transport", "bus", "train", "taxi", "station", "airport", "subway", "uber", "lyft"],
-        "services": ["bank", "atm", "gas", "fuel", "repair", "salon", "spa", "gym", "fitness"],
-        "education": ["school", "university", "library", "college", "education", "learning"]
+        "health": ["doctor", "hospital", "clinic", "pharmacy", "medical", "health", "dentist", "urgent care"]
     ]
     
     private let cuisineKeywords: [String: String] = [
         "chinese": "Chinese restaurants",
-        "italian": "Italian restaurants", 
+        "italian": "Italian restaurants",
         "mexican": "Mexican restaurants",
         "thai": "Thai restaurants",
-        "japanese": "Japanese restaurants and sushi",
-        "indian": "Indian restaurants",
+        "japanese": "Japanese restaurants",
         "pizza": "Pizza places",
         "burger": "Burger restaurants",
         "sushi": "Sushi restaurants",
@@ -31,7 +27,7 @@ class AIService {
     ]
     
     init() {
-        let apiKey = APIConfig.openAIApiKey
+        let apiKey = APIConfig.openAIKey
         if apiKey.isEmpty || apiKey == "your-openai-api-key-here" {
             print("⚠️ OpenAI API key not configured - using fallback responses")
         }
@@ -99,17 +95,17 @@ class AIService {
             let userPrompt = "\(query)\(locationContext)"
             
             let chatQuery = ChatQuery(
+                model: "gpt-4o-mini", // Using GPT-4o mini for better understanding
                 messages: [
-                    ChatQuery.ChatCompletionMessageParam(role: .system, content: systemMessage)!,
-                    ChatQuery.ChatCompletionMessageParam(role: .user, content: userPrompt)!
-                ],
-                model: .gpt4_o_mini // Using GPT-4 for better understanding
+                    Chat(role: .system, content: systemMessage),
+                    Chat(role: .user, content: userPrompt)
+                ]
             )
             
             Task {
                 do {
                     // Check if API key is properly configured
-                    let apiKey = APIConfig.openAIApiKey
+                    let apiKey = APIConfig.openAIKey
                     if apiKey.isEmpty || apiKey == "your-openai-api-key-here" {
                         throw NSError(domain: "AIService", code: -3, userInfo: [NSLocalizedDescriptionKey: "OpenAI API key not configured"])
                     }
@@ -134,47 +130,34 @@ class AIService {
                     // Enhanced fallback responses with location context
                     await MainActor.run {
                         let fallbackResponse = self.getEnhancedFallbackResponse(
-                            for: category,
-                            query: lowercasedQuery,
-                            hasLocation: location != nil,
-                            specificSearch: specificSearchTerm
+                            for: query, 
+                            category: category, 
+                            hasLocation: location != nil
                         )
-                        let searchCategory = specificSearchTerm != nil ? "restaurant" : category
-                        promise(.success((fallbackResponse, searchCategory)))
+                        promise(.success((fallbackResponse, category)))
                     }
                 }
             }
-        }.eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
     
-    private func getEnhancedFallbackResponse(for category: String?, query: String, hasLocation: Bool, specificSearch: String?) -> String {
-        let locationSuffix = hasLocation ? " based on your current location" : ". Please enable location access for better results"
-        
-        // Add a subtle indicator that this is a fallback response
-        let prefix = "Let me help you find "
-        
-        if let specificSearch = specificSearch {
-            return "\(prefix)great \(specificSearch.lowercased()) near you\(locationSuffix). I'll search for places with good ratings and reviews!"
-        }
+    private func getEnhancedFallbackResponse(for query: String, category: String?, hasLocation: Bool) -> String {
+        let locationSuffix = hasLocation ? " based on your current location" : ""
+        let prefix = hasLocation ? "Great! I can help you find " : "I can help you find "
         
         if let category = category {
             switch category {
             case "restaurant":
-                return "\(prefix)some excellent dining options near you\(locationSuffix). I'll look for restaurants with good ratings and variety!"
+                return "\(prefix)restaurants and dining options\(locationSuffix). I'll search for great places to eat nearby!"
             case "hotel":
-                return "\(prefix)comfortable accommodations in your area\(locationSuffix). I'll search for well-rated hotels and lodging options."
+                return "\(prefix)hotels and accommodations\(locationSuffix). I'll find comfortable places to stay."
             case "shopping":
-                return "\(prefix)great shopping destinations nearby\(locationSuffix). Looking for popular stores and retail locations!"
+                return "\(prefix)shopping centers and stores\(locationSuffix). I'll locate the best shopping options nearby."
             case "entertainment":
-                return "\(prefix)fun entertainment venues in your area\(locationSuffix). I'll find movies, activities, and entertainment options!"
+                return "\(prefix)entertainment venues and activities\(locationSuffix). I'll find fun things to do in your area."
             case "health":
-                return "\(prefix)healthcare facilities near you\(locationSuffix). Prioritizing the closest and most accessible options."
-            case "transportation":
-                return "\(prefix)transportation options in your area\(locationSuffix). I'll search for stations, stops, and transit information."
-            case "services":
-                return "\(prefix)helpful services near you\(locationSuffix). Looking for banks, gas stations, and other essential services!"
-            case "education":
-                return "\(prefix)educational facilities in your area\(locationSuffix). I'll search for schools, libraries, and learning centers."
+                return "\(prefix)healthcare facilities and medical services\(locationSuffix). I'll help you find medical care nearby."
             default:
                 return "\(prefix)relevant places near you\(locationSuffix). I'll find what you're looking for!"
             }
@@ -196,13 +179,7 @@ class AIService {
         case "entertainment":
             return "entertainment venues"
         case "health":
-            return "healthcare facilities"
-        case "transportation":
-            return "transportation stations"
-        case "services":
-            return "services"
-        case "education":
-            return "schools and libraries"
+            return "medical facilities"
         default:
             return category
         }
@@ -211,29 +188,19 @@ class AIService {
     func generateSpecificLocationQuery(for userQuery: String) -> String? {
         let lowercased = userQuery.lowercased()
         
-        // Check for specific cuisine types
+        // Check for specific cuisines
         for (cuisine, searchTerm) in cuisineKeywords {
             if lowercased.contains(cuisine) {
-                return cuisine + " restaurants"
+                return searchTerm.lowercased()
             }
         }
         
-        // Check for other specific terms
-        if lowercased.contains("coffee") || lowercased.contains("cafe") {
-            return "coffee shops"
-        }
-        if lowercased.contains("grocery") || lowercased.contains("supermarket") {
-            return "grocery stores"
-        }
-        if lowercased.contains("pharmacy") || lowercased.contains("drugstore") {
-            return "pharmacies"
-        }
-        if lowercased.contains("gas") || lowercased.contains("fuel") {
-            return "gas stations"
-        }
-        if lowercased.contains("bank") || lowercased.contains("atm") {
-            return "banks"
-        }
+        // Check for specific terms
+        if lowercased.contains("coffee") { return "coffee shops" }
+        if lowercased.contains("gas") { return "gas stations" }
+        if lowercased.contains("pharmacy") { return "pharmacies" }
+        if lowercased.contains("grocery") { return "grocery stores" }
+        if lowercased.contains("bank") { return "banks" }
         
         return nil
     }

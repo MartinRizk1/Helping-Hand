@@ -52,10 +52,10 @@ struct ChatView: View {
                             .foregroundColor(.white)
                         
                         HStack(spacing: 4) {
-                            Image(systemName: "brain.head.profile")
+                            Image(systemName: chatViewModel.locationServiceInstance.isUsingFallbackLocation ? "location.circle" : "location.fill")
                                 .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(.yellow)
-                            Text("Powered by ChatGPT")
+                                .foregroundColor(chatViewModel.locationServiceInstance.isUsingFallbackLocation ? .orange : .yellow)
+                            Text(chatViewModel.locationServiceInstance.isUsingFallbackLocation ? "Using Dallas area" : "Find places nearby")
                                 .font(.system(size: 12, weight: .medium, design: .rounded))
                                 .foregroundColor(.white.opacity(0.8))
                         }

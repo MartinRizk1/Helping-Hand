@@ -108,6 +108,11 @@ secrets.json
 APIKeys.plist
 secrets.plist
 
+# Test files (optional - remove if you want to include tests)
+TestAppleLogic.swift
+TestAppleSearchIntelligence.swift
+test_apple_search.py
+
 # Development Configuration
 Config/development.json
 Config/local.json

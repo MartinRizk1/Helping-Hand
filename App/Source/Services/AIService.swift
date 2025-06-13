@@ -8,7 +8,7 @@ class AIService {
     private let categoryKeywords: [String: [String]] = [
         "restaurant": ["restaurant", "food", "eat", "dining", "lunch", "dinner", "breakfast", "cafe", "chinese", "italian", "mexican", "thai", "japanese", "pizza", "burger", "sushi", "tacos", "coffee"],
         "hotel": ["hotel", "motel", "stay", "accommodation", "lodging", "inn", "resort", "bed and breakfast"],
-        "shopping": ["shop", "mall", "store", "retail", "market", "grocery", "supermarket", "pharmacy", "clothing"],
+        "shopping": ["shop", "mall", "store", "retail", "market", "grocery", "supermarket", "pharmacy", "clothing", "apple", "apples"],
         "entertainment": ["movie", "theatre", "entertainment", "fun", "activity", "cinema", "bowling", "arcade", "bar", "nightclub", "museum", "park"],
         "health": ["doctor", "hospital", "clinic", "pharmacy", "medical", "health", "dentist", "urgent care"]
     ]
@@ -24,6 +24,12 @@ class AIService {
         "sushi": "Sushi restaurants",
         "tacos": "Taco shops",
         "coffee": "Coffee shops and cafes"
+    ]
+    
+    // Special search terms that need intelligent handling
+    private let specialSearchTerms: [String: [String]] = [
+        "apple": ["Apple Store", "grocery stores apples", "electronics store apple"],
+        "apples": ["Apple Store", "grocery stores fresh apples", "supermarket fruits"]
     ]
     
     init() {
@@ -146,6 +152,18 @@ class AIService {
         let locationSuffix = hasLocation ? " based on your current location" : ""
         let prefix = hasLocation ? "Great! I can help you find " : "I can help you find "
         
+        // Handle special apple queries
+        let lowercased = query.lowercased()
+        if lowercased.contains("apple") || lowercased.contains("apples") {
+            if lowercased.contains("store") || lowercased.contains("buy") || lowercased.contains("tech") {
+                return "\(prefix)Apple Stores\(locationSuffix). I'll search for official Apple retail locations where you can buy Apple products!"
+            } else if lowercased.contains("eat") || lowercased.contains("fruit") || lowercased.contains("fresh") || lowercased.contains("grocery") {
+                return "\(prefix)grocery stores with fresh apples\(locationSuffix). I'll find supermarkets and food stores where you can buy fresh apples!"
+            } else {
+                return "\(prefix)both Apple Stores and grocery stores with apples\(locationSuffix). I'll search for Apple retail locations and supermarkets!"
+            }
+        }
+        
         if let category = category {
             switch category {
             case "restaurant":
@@ -188,6 +206,43 @@ class AIService {
     func generateSpecificLocationQuery(for userQuery: String) -> String? {
         let lowercased = userQuery.lowercased()
         
+        // Handle special search terms that could have multiple meanings
+        if lowercased.contains("apple") || lowercased.contains("apples") {
+            // Context clues that suggest Apple Store (tech company)
+            let appleStoreIndicators = [
+                "apple store", "iphone", "ipad", "mac", "macbook", "watch", "airpods",
+                "repair", "genius", "tech", "computer", "device", "electronics"
+            ]
+            
+            // Context clues that suggest grocery store (fruit)
+            let groceryIndicators = [
+                "fresh", "organic", "fruit", "grocery", "supermarket", "produce",
+                "food", "eat", "cooking", "recipe", "juice", "pie", "crisp",
+                "red apples", "green apples", "gala", "granny smith", "honeycrisp"
+            ]
+            
+            let hasAppleStoreContext = appleStoreIndicators.contains { lowercased.contains($0) }
+            let hasGroceryContext = groceryIndicators.contains { lowercased.contains($0) }
+            
+            // Special case: "buy" with Apple products
+            let hasBuyAppleProducts = lowercased.contains("buy") && (
+                lowercased.contains("iphone") || lowercased.contains("ipad") || 
+                lowercased.contains("mac") || lowercased.contains("apple")
+            )
+            
+            if hasAppleStoreContext || hasBuyAppleProducts {
+                return "Apple Store"
+            } else if hasGroceryContext {
+                return "grocery stores fresh apples"
+            } else if lowercased.contains("store") && !lowercased.contains("grocery") {
+                // Generic "store" with apple likely means Apple Store
+                return "Apple Store"
+            } else {
+                // Default to both Apple Stores and grocery stores
+                return "Apple Store OR grocery stores apples"
+            }
+        }
+        
         // Check for specific cuisines
         for (cuisine, searchTerm) in cuisineKeywords {
             if lowercased.contains(cuisine) {
@@ -201,6 +256,9 @@ class AIService {
         if lowercased.contains("pharmacy") { return "pharmacies" }
         if lowercased.contains("grocery") { return "grocery stores" }
         if lowercased.contains("bank") { return "banks" }
+        if lowercased.contains("hospital") { return "hospitals" }
+        if lowercased.contains("hotel") { return "hotels" }
+        if lowercased.contains("restaurant") { return "restaurants" }
         
         return nil
     }

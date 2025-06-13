@@ -4,8 +4,11 @@ import CoreLocation
 struct LandingView: View {
     @StateObject private var locationService = LocationService()
     @State private var showChat = false
+    @State private var showOnboarding = false
     @State private var nearbyEmergencyPlaces: [EmergencyPlace] = []
     @State private var animateElements = false
+    @State private var userName: String = ""
+    @State private var userInterests: Set<PlaceCategory> = []
     
     var body: some View {
         NavigationView {
@@ -89,6 +92,13 @@ struct LandingView: View {
                                     )
                                     .shadow(color: .black.opacity(0.3), radius: 2)
                                 
+                                if !userName.isEmpty {
+                                    Text("Welcome back, \(userName)!")
+                                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                        .foregroundColor(.yellow)
+                                        .padding(.top, 5)
+                                }
+                                
                                 Text("AI-Powered Premium Location Assistant")
                                     .font(.system(size: 16, weight: .medium, design: .rounded))
                                     .foregroundColor(.white.opacity(0.8))
@@ -102,6 +112,10 @@ struct LandingView: View {
                         // Main premium action button with Lamborghini styling
                         VStack(spacing: 20) {
                             Button(action: {
+                                // Request location permission first, then show chat
+                                if locationService.authorizationStatus == .notDetermined {
+                                    locationService.requestLocationPermission()
+                                }
                                 showChat = true
                             }) {
                                 HStack(spacing: 16) {
@@ -109,9 +123,9 @@ struct LandingView: View {
                                         .font(.system(size: 24, weight: .bold))
                                     
                                     VStack(alignment: .leading, spacing: 2) {
-                                        Text("Start AI Chat")
+                                        Text("Start AI Assistant")
                                             .font(.system(size: 18, weight: .bold, design: .rounded))
-                                        Text("Powered by ChatGPT")
+                                        Text("Find places nearby")
                                             .font(.system(size: 12, weight: .medium))
                                             .opacity(0.8)
                                     }
@@ -161,12 +175,32 @@ struct LandingView: View {
             }
         }
         .navigationBarHidden(true)
-        .background(
-            NavigationLink("", destination: ChatView(), isActive: $showChat)
-                .hidden()
-        )
+        .sheet(isPresented: $showChat) {
+            ChatView()
+                .environmentObject(ChatViewModel())
+        }
+        .sheet(isPresented: $showOnboarding) {
+            OnboardingView { name, interests in
+                userName = name
+                userInterests = interests
+                UserDefaults.standard.set(name, forKey: "userName")
+                UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
+                showOnboarding = false
+            }
+        }
         .onAppear {
-            locationService.requestLocationPermission()
+            // Check if user has completed onboarding
+            let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+            if !hasCompletedOnboarding {
+                showOnboarding = true
+            } else {
+                userName = UserDefaults.standard.string(forKey: "userName") ?? ""
+            }
+            
+            // Always request location permission on app start
+            if locationService.authorizationStatus == .notDetermined {
+                locationService.requestLocationPermission()
+            }
             loadNearbyEmergencyPlaces()
             withAnimation {
                 animateElements = true
@@ -175,11 +209,16 @@ struct LandingView: View {
     }
     
     private func loadNearbyEmergencyPlaces() {
-        // Simulate loading nearby emergency places
+        // Load comprehensive emergency services and hotlines
         nearbyEmergencyPlaces = [
             EmergencyPlace(name: "Emergency Services", phone: "911", type: .emergency),
-            EmergencyPlace(name: "Poison Control", phone: "1-800-222-1222", type: .poison),
-            EmergencyPlace(name: "Mental Health Crisis", phone: "988", type: .mental)
+            EmergencyPlace(name: "Poison Control Center", phone: "1-800-222-1222", type: .poison),
+            EmergencyPlace(name: "Mental Health Crisis", phone: "988", type: .mental),
+            EmergencyPlace(name: "National Suicide Prevention", phone: "1-800-273-8255", type: .mental),
+            EmergencyPlace(name: "Domestic Violence Hotline", phone: "1-800-799-7233", type: .safety),
+            EmergencyPlace(name: "Child Abuse Hotline", phone: "1-800-4-A-CHILD", type: .safety),
+            EmergencyPlace(name: "Animal Poison Control", phone: "1-888-426-4435", type: .poison),
+            EmergencyPlace(name: "Disaster Distress Helpline", phone: "1-800-985-5990", type: .mental)
         ]
     }
 }
@@ -273,26 +312,26 @@ struct LocationStatusCard: View {
     private var locationStatusColor: Color {
         switch locationService.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
-            return .green
+            return locationService.isUsingFallbackLocation ? .orange : .green
         case .denied, .restricted:
-            return .red
+            return .orange  // Changed from red to orange since we have fallback
         case .notDetermined:
             return .orange
         @unknown default:
-            return .gray
+            return .orange
         }
     }
     
     private var locationStatusText: String {
         switch locationService.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
-            return "Location access enabled"
+            return locationService.isUsingFallbackLocation ? "Using Dallas area for searches" : "Location access enabled"
         case .denied, .restricted:
-            return "Location access denied - Enable for better results"
+            return "Location access denied - Using Dallas area"
         case .notDetermined:
-            return "Location permission pending"
+            return locationService.isUsingFallbackLocation ? "Location pending - Using Dallas area" : "Location permission pending"
         @unknown default:
-            return "Location status unknown"
+            return "Using Dallas area for searches"
         }
     }
 }
@@ -373,9 +412,7 @@ struct EmergencyPlaceRow: View {
             Spacer()
             
             Button(action: {
-                if let phoneURL = URL(string: "tel://\(place.phone)") {
-                    UIApplication.shared.open(phoneURL)
-                }
+                makeEmergencyCall(to: place.phone)
             }) {
                 HStack(spacing: 8) {
                     Image(systemName: "phone.fill")
@@ -399,6 +436,34 @@ struct EmergencyPlaceRow: View {
         }
         .padding(.vertical, 8)
     }
+    
+    private func makeEmergencyCall(to phoneNumber: String) {
+        // Clean the phone number by removing any non-numeric characters except + and -
+        let cleanedNumber = phoneNumber.components(separatedBy: CharacterSet(charactersIn: "0123456789+-").inverted).joined()
+        
+        // Create the tel URL
+        guard let phoneURL = URL(string: "tel://\(cleanedNumber)") else {
+            print("❌ Invalid phone number: \(phoneNumber)")
+            return
+        }
+        
+        // Check if the device can make phone calls
+        if UIApplication.shared.canOpenURL(phoneURL) {
+            print("📞 Initiating emergency call to \(phoneNumber)")
+            UIApplication.shared.open(phoneURL, options: [:]) { success in
+                if success {
+                    print("✅ Emergency call initiated successfully")
+                } else {
+                    print("❌ Failed to initiate emergency call")
+                }
+            }
+        } else {
+            print("❌ Device cannot make phone calls or invalid number: \(phoneNumber)")
+            // Fallback: Copy number to clipboard for manual dialing
+            UIPasteboard.general.string = cleanedNumber
+            print("📋 Phone number copied to clipboard: \(cleanedNumber)")
+        }
+    }
 }
 
 struct EmergencyPlace: Identifiable {
@@ -409,13 +474,14 @@ struct EmergencyPlace: Identifiable {
 }
 
 enum EmergencyType {
-    case emergency, poison, mental
+    case emergency, poison, mental, safety
     
     var icon: String {
         switch self {
         case .emergency: return "cross.circle.fill"
         case .poison: return "exclamationmark.triangle.fill"
         case .mental: return "brain.head.profile"
+        case .safety: return "shield.fill"
         }
     }
     
@@ -424,6 +490,7 @@ enum EmergencyType {
         case .emergency: return .red
         case .poison: return .orange
         case .mental: return .blue
+        case .safety: return .purple
         }
     }
 }

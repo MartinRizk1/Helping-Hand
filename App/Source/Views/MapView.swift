@@ -54,22 +54,51 @@ struct PlaceAnnotation: View {
     var body: some View {
         VStack(spacing: 0) {
             if isSelected {
-                Text(place.name)
-                    .font(.caption)
-                    .padding(4)
-                    .background(Color(.systemBackground))
-                    .cornerRadius(4)
-                    .padding(.bottom, 4)
+                VStack(spacing: 2) {
+                    Text(place.name)
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(.primary)
+                    if let distance = place.formattedDistance {
+                        Text(distance)
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(.regularMaterial)
+                        .shadow(radius: 4)
+                )
+                .padding(.bottom, 4)
             }
             
-            Image(systemName: place.category.systemIcon)
-                .font(.system(size: isSelected ? 24 : 20))
-                .foregroundColor(isSelected ? .blue : .red)
-                .background(
-                    Circle()
-                        .fill(Color(.systemBackground))
-                        .shadow(radius: 2)
-                )
+            ZStack {
+                Circle()
+                    .fill(categoryColor.opacity(0.9))
+                    .frame(width: isSelected ? 32 : 24, height: isSelected ? 32 : 24)
+                    .shadow(radius: isSelected ? 4 : 2)
+                
+                Image(systemName: place.category.systemIcon)
+                    .font(.system(size: isSelected ? 16 : 12, weight: .semibold))
+                    .foregroundColor(.white)
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: isSelected)
+    }
+    
+    private var categoryColor: Color {
+        switch place.category {
+        case .food: return .orange
+        case .coffee: return .brown
+        case .shopping: return .blue
+        case .electronics: return .purple
+        case .grocery: return .green
+        case .health: return .red
+        case .services: return .gray
+        case .entertainment: return .pink
+        case .transportation: return .cyan
         }
     }
 }

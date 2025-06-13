@@ -75,11 +75,22 @@ class ChatViewModel: ObservableObject {
                         self?.messages.append(aiMessage)
                         
                         if let category = category {
-                            // Try specific search first, then fall back to general category
+                            // Enhanced search logic for better Apple Store/grocery detection
                             let specificQuery = self?.aiService.generateSpecificLocationQuery(for: text)
                             let searchQuery = specificQuery ?? self?.aiService.generateLocationQuery(for: category)
+                            
                             print("🔍 Performing search with query: \(searchQuery ?? "unknown")")
+                            print("🔍 Original user query: '\(text)'")
+                            print("🔍 Detected category: '\(category)'")
+                            
                             self?.locationService.searchNearbyPlaces(for: text, query: searchQuery)
+                        } else {
+                            // If no category detected, try to extract meaningful search terms from the user query
+                            let fallbackQuery = self?.extractSearchTermsFromQuery(text)
+                            if let fallbackQuery = fallbackQuery {
+                                print("🔍 Performing fallback search with query: \(fallbackQuery)")
+                                self?.locationService.searchNearbyPlaces(for: text, query: fallbackQuery)
+                            }
                         }
                     }
                 )
@@ -170,5 +181,36 @@ class ChatViewModel: ObservableObject {
         guard let location = locationService.currentLocation else { return false }
         let age = -location.timestamp.timeIntervalSinceNow
         return age < 30 && location.horizontalAccuracy < 100
+    }
+    
+    // MARK: - Search Enhancement Methods
+    
+    private func extractSearchTermsFromQuery(_ query: String) -> String? {
+        let lowercased = query.lowercased()
+        
+        // Common search patterns
+        let searchPatterns = [
+            "find": "",
+            "where": "",
+            "locate": "",
+            "search for": "",
+            "looking for": "",
+            "need": "",
+            "want": ""
+        ]
+        
+        var cleanQuery = lowercased
+        for (pattern, replacement) in searchPatterns {
+            cleanQuery = cleanQuery.replacingOccurrences(of: pattern, with: replacement)
+        }
+        
+        cleanQuery = cleanQuery.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // If the cleaned query is meaningful, use it
+        if cleanQuery.count > 2 && !cleanQuery.contains("near") && !cleanQuery.contains("nearby") {
+            return cleanQuery
+        }
+        
+        return nil
     }
 }

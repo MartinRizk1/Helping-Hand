@@ -27,7 +27,7 @@ struct Place: Identifiable, Equatable {
     }
 }
 
-enum PlaceCategory: String, CaseIterable {
+enum PlaceCategory: String, CaseIterable, Codable {
     case food = "Food"
     case coffee = "Coffee"
     case shopping = "Shopping"
@@ -106,5 +106,45 @@ extension Place {
         default:
             return .services
         }
+    }
+}
+
+// Extension to help with converting from string categories
+extension PlaceCategory {
+    static func from(_ categoryString: String) -> PlaceCategory {
+        let lowercased = categoryString.lowercased()
+        
+        if lowercased.contains("restaurant") || lowercased.contains("dining") || 
+           lowercased.contains("food") || lowercased.contains("cuisine") {
+            return .food
+        } else if lowercased.contains("coffee") || lowercased.contains("cafe") || 
+                  lowercased.contains("bakery") {
+            return .coffee
+        } else if lowercased.contains("shop") || lowercased.contains("store") || 
+                  lowercased.contains("mall") || lowercased.contains("retail") {
+            return .shopping
+        } else if lowercased.contains("electronic") || lowercased.contains("tech") || 
+                  lowercased.contains("apple store") || lowercased.contains("computer") {
+            return .electronics
+        } else if lowercased.contains("grocery") || lowercased.contains("supermarket") || 
+                  lowercased.contains("market") || lowercased.contains("food store") {
+            return .grocery
+        } else if lowercased.contains("health") || lowercased.contains("hospital") || 
+                  lowercased.contains("clinic") || lowercased.contains("doctor") || 
+                  lowercased.contains("pharmacy") {
+            return .health
+        } else if lowercased.contains("service") || lowercased.contains("repair") || 
+                  lowercased.contains("bank") || lowercased.contains("salon") {
+            return .services
+        } else if lowercased.contains("entertainment") || lowercased.contains("theater") || 
+                  lowercased.contains("cinema") || lowercased.contains("venue") {
+            return .entertainment
+        } else if lowercased.contains("transport") || lowercased.contains("transit") || 
+                  lowercased.contains("station") || lowercased.contains("airport") {
+            return .transportation
+        }
+        
+        // Default category if no match
+        return .services
     }
 }

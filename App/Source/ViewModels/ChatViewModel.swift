@@ -36,7 +36,7 @@ class ChatViewModel: ObservableObject {
             
         // Add welcome message
         let welcomeMessage = ChatMessage(
-            content: "👋 Hi there! I'm your AI location assistant. I can help you find amazing places nearby!\n\nTry asking me about:\n• Restaurants (like \"Chinese food\" or \"pizza\")\n• Hotels and accommodations\n• Shopping and services\n• Entertainment venues\n• Healthcare facilities\n\nPlease allow location access so I can provide personalized recommendations based on where you are! 📍",
+            content: "👋 Hi there! I'm your AI location assistant. I can help you find amazing places nearby and answer questions about locations or general information!\n\nTry asking me about:\n• Restaurants (like \"Chinese food\" or \"pizza\")\n• Hotels and accommodations\n• Shopping and services\n• Entertainment venues\n• Healthcare facilities\n• Information about cities or areas\n• General knowledge questions\n\nPlease allow location access so I can provide personalized recommendations based on where you are! 📍",
             isUser: false
         )
         messages.append(welcomeMessage)
@@ -74,7 +74,16 @@ class ChatViewModel: ObservableObject {
                         let aiMessage = ChatMessage(content: response, isUser: false)
                         self?.messages.append(aiMessage)
                         
-                        if let category = category {
+                        // Analyze if this was an information-seeking query
+                        let isInformationQuery = text.lowercased().contains("tell me about") || 
+                                               text.lowercased().contains("what is") || 
+                                               text.lowercased().contains("explain") ||
+                                               text.starts(with: "Who") ||
+                                               text.starts(with: "When") ||
+                                               text.starts(with: "Why")
+                        
+                        // Only trigger location search if category is provided and not an information-only query
+                        if let category = category, !isInformationQuery || category.contains("restaurant") || category.contains("store") {
                             // Enhanced search logic for better Apple Store/grocery detection
                             let specificQuery = self?.aiService.generateSpecificLocationQuery(for: text)
                             let searchQuery = specificQuery ?? self?.aiService.generateLocationQuery(for: category)
@@ -84,13 +93,16 @@ class ChatViewModel: ObservableObject {
                             print("🔍 Detected category: '\(category)'")
                             
                             self?.locationService.searchNearbyPlaces(for: text, query: searchQuery)
-                        } else {
-                            // If no category detected, try to extract meaningful search terms from the user query
+                        } else if !isInformationQuery {
+                            // If no category detected and not an information query, try to extract meaningful search terms
                             let fallbackQuery = self?.extractSearchTermsFromQuery(text)
                             if let fallbackQuery = fallbackQuery {
                                 print("🔍 Performing fallback search with query: \(fallbackQuery)")
                                 self?.locationService.searchNearbyPlaces(for: text, query: fallbackQuery)
                             }
+                        } else {
+                            // For information queries, we don't need to trigger a location search
+                            print("ℹ️ Information query detected, skipping location search")
                         }
                     }
                 )

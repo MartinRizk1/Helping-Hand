@@ -2,6 +2,7 @@ import Foundation
 import CoreLocation
 import SwiftUI
 import MapKit
+import Combine
 
 @MainActor
 class MainViewModel: NSObject, ObservableObject {
@@ -14,33 +15,43 @@ class MainViewModel: NSObject, ObservableObject {
     @Published var isLoading = false
     
     private let locationManager = CLLocationManager()
-    private let searchService: SearchService
+    private let locationService = LocationService()
+    private var cancellables = Set<AnyCancellable>()
     
     override init() {
-        self.searchService = SearchService(locationManager: locationManager)
         super.init()
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         checkLocationAuthorization()
+        
+        // Subscribe to location results
+        locationService.$lastLocationResults
+            .sink { [weak self] results in
+                if let results = results {
+                    self?.places = results.map { locationResult in
+                        Place(
+                            name: locationResult.name,
+                            coordinate: locationResult.coordinate,
+                            category: PlaceCategory.from(locationResult.category),
+                            distance: locationResult.distance,
+                            address: locationResult.address,
+                            phoneNumber: locationResult.phoneNumber,
+                            rating: locationResult.rating,
+                            isOpen: nil
+                        )
+                    }
+                }
+            }
+            .store(in: &cancellables)
     }
     
     func search() {
         guard !searchText.isEmpty else { return }
         
-        Task {
-            isLoading = true
-            defer { isLoading = false }
-            
-            do {
-                await searchService.search(query: searchText)
-                self.places = searchService.searchResults
-                self.errorMessage = nil
-            } catch {
-                self.errorMessage = error.localizedDescription
-                self.places = []
-            }
-        }
+        isLoading = true
+        locationService.searchNearbyPlaces(for: searchText, query: searchText)
+        isLoading = false
     }
     
     func requestLocationPermission() {

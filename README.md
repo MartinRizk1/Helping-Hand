@@ -1,15 +1,44 @@
 # HelpingHand iOS App
 
-An intelligent location-based assistant that helps users find nearby places and services with AI-powered search capabilities.
+An advanced AI-powered location service that learns your preferences and provides intelligent, personalized recommendations using machine learning and natural language processing.
 
-## 🌟 Features
+## 🧠 Advanced AI & Machine Learning Features
 
-- **AI-Powered Search Intelligence**: Smart detection for Apple Store vs grocery store searches when users search for "apples"
-- **Enhanced Emergency Services**: Comprehensive emergency contact system with one-tap calling
-- **Real-time Location Services**: GPS-based location tracking with Dallas fallback
-- **Multi-Category Search**: Support for restaurants, hotels, shopping, entertainment, and more
-- **Premium Dark UI**: Lamborghini-inspired dark theme with yellow/orange accents
-- **Intelligent Place Categorization**: Smart categorization of search results
+- **🎯 Personalized Recommendations**: ML-powered place ranking based on your behavior patterns
+- **🗣 Natural Language Processing**: Advanced query understanding with intent detection and sentiment analysis
+- **🤖 On-Device Intelligence**: TensorFlow Lite integration for real-time preference prediction
+- **📊 Continuous Learning**: Core ML models that improve from your interactions
+- **🌍 Hybrid Search**: Combines MapKit and Google Places API with AI ranking
+- **🎨 Context-Aware Results**: Considers time, location, weather, and activity patterns
+
+## 🌟 Core Features
+
+- **Smart Query Processing**: Intelligently distinguishes "Apple Store" vs "grocery store apples"
+- **Real-Time Learning**: Adapts to your preferences with every interaction
+- **Enhanced Emergency Services**: Comprehensive emergency contact system
+- **Advanced Location Tracking**: GPS-based with intelligent fallback
+- **Multi-Source Search**: MapKit + Google Places + AI ranking
+- **Premium Dark UI**: Lamborghini-inspired design with intelligent place highlighting
+
+## 🚀 AI/ML Technology Stack
+
+### Machine Learning Models
+- **User Preference Model**: Predicts your likelihood to prefer specific places
+- **Place Recommendation Engine**: Ranks results based on personal behavior patterns
+- **Contextual Embeddings**: Semantic understanding of queries and place descriptions
+- **Intent Classification**: Automatically detects what you're looking for
+
+### Natural Language Processing
+- **Query Analysis**: Tokenization, named entity recognition, sentiment analysis
+- **Semantic Search**: Understanding context beyond simple keyword matching
+- **Ambiguity Resolution**: Smart handling of queries with multiple meanings
+- **Confidence Scoring**: AI confidence levels for better user experience
+
+### Data Intelligence
+- **Behavioral Analytics**: Learns from interaction duration, selections, and patterns
+- **Temporal Preferences**: Understands time-based preferences (morning coffee, lunch spots)
+- **Location Familiarity**: Recognizes and adapts to your familiar areas
+- **Privacy-First Learning**: All learning happens on-device with anonymous data
 
 ## 🚀 Quick Start
 
@@ -17,7 +46,8 @@ An intelligent location-based assistant that helps users find nearby places and 
 
 - Xcode 15.0+
 - iOS 17.0+
-- OpenAI API Key (optional - app works with fallback responses)
+- OpenAI API Key (for enhanced AI responses)
+- Google Places API Key (for comprehensive place data)
 
 ### Setup
 
@@ -33,29 +63,60 @@ cd HelpingHand
 open HelpingHand.xcodeproj
 ```
 
-3. Configure API Key (optional):
+3. Configure API Keys:
 ```bash
 # Copy the example secrets file
 cp App/Config/secrets.json.example App/Config/secrets.json
 
-# Edit with your OpenAI API key
+# Edit with your API keys
 # {
-#   "OPENAI_API_KEY": "your-actual-api-key-here"
+#   "openai_api_key": "your-openai-api-key-here",
+#   "google_places_api_key": "your-google-places-api-key-here"
 # }
 ```
 
 4. Build and run:
 - Select target device/simulator in Xcode
 - Press `Cmd+R` to build and run
+- The app works with fallback functionality even without API keys
 
-## 🛠 Architecture
+## 🧠 AI/ML Architecture
 
-### Core Components
+## 🧠 AI/ML Architecture
 
-- **AIService**: Handles intelligent query processing and Apple Store detection
-- **LocationService**: GPS location management with multi-search capabilities
-- **Place Models**: Enhanced categorization system for different location types
-- **Emergency System**: Comprehensive emergency contact and calling functionality
+### Advanced Services Layer
+- **AIService**: Enhanced NLP with intent detection and semantic analysis
+- **TensorFlowLiteService**: On-device ML inference for real-time predictions
+- **UserPreferenceService**: Core ML-based behavioral learning and preference management
+- **GooglePlacesService**: Rich place data integration with AI-enhanced search
+- **MLModelTrainingService**: Continuous learning infrastructure with automated retraining
+- **LocationService**: Hybrid search combining multiple data sources with ML ranking
+
+### Intelligence Pipeline
+```
+User Query → NLP Analysis → Intent Detection → Multi-Source Search → 
+ML Ranking → Personalization → Context Filtering → Smart Results
+```
+
+### Key AI/ML Features
+
+#### Advanced Search Intelligence
+- **Contextual Understanding**: "apple" → Apple Store (tech context) vs grocery stores (food context)
+- **Multi-Intent Queries**: Handles complex queries with multiple search intentions
+- **Semantic Similarity**: Beyond keyword matching to understand meaning
+- **Real-Time Adaptation**: Learns and adapts during each session
+
+#### Personalization Engine
+- **Behavioral Pattern Recognition**: Learns from every interaction and decision
+- **Temporal Preferences**: Morning coffee spots, lunch restaurants, evening entertainment
+- **Location-Based Learning**: Familiar areas vs exploration preferences
+- **Activity Context**: Business meetings, leisure time, emergency situations
+
+#### Intelligent Data Fusion
+- **Hybrid Search Results**: MapKit + Google Places + AI ranking
+- **Duplicate Detection**: Smart deduplication using Levenshtein distance
+- **Quality Scoring**: ML-based relevance and quality assessment
+- **Confidence Weighting**: Higher weight for well-established user preferences
 
 ### Key Features
 

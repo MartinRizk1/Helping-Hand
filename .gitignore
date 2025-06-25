@@ -98,7 +98,6 @@ Assets.xcassets/helper_neutral.imageset/*.png
 
 # Security - API Keys and Secrets
 Config/secrets.json
-App/Config/secrets.json
 *.secrets.json
 secrets.json
 .env
@@ -118,3 +117,10 @@ Config/development.json
 Config/local.json
 build/
 DerivedData/
+
+# Secrets
+App/Config/secrets.json
+
+# Xcode User Data
+xcuserdata/
+*.xcuserstate
